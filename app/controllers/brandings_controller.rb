@@ -6,6 +6,9 @@ class BrandingsController < ApplicationController
   def index
   end
   
+  def callback
+  end
+
   def find
     @branding = Brandings.find
     @products = Brandings.find_products
