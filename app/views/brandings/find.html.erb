@@ -1,0 +1,199 @@
+<!-- Example of accessing a record field -->
+<style type="text/css">
+	body{
+		background-image: url('<%= ENV['sfdc_instance_url'] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>');
+	}
+	#header{
+		background-image: url('<%= ENV['sfdc_instance_url'] %><%= raw @branding["records"][0]["Image_Logo__c"] %>');
+		height:90px;
+		width:800px;
+	}
+	.page{
+		width:800px;
+		background:#CCC;
+		height:800px;
+		display:none;
+	}
+	#login{
+		display:block;
+	}
+	#loginButton{
+		width:200px;
+		height:200px;
+		background:#FF00FF;
+	}
+	#overlay{
+		position:absolute;
+		top:90px;
+		left:0px;
+		background:#FF0000;
+		opacity:0.5;
+	}
+	.button{
+		height:100px;
+		width:100px;
+		margin-left:20px;
+		background:#00FF00;
+	}
+</style>
+
+<div id="header">
+	<img id="contactpicture"></img>
+</div>
+
+<div class="page" id="overlay">
+	Loading...
+</div>
+
+<div class="page" id="login">
+	<div id="loginButton">Enter Shop</div>
+</div>
+
+<div class="page" id="store">
+	<% @products["records"].each do |p| %>
+		<%= p["Name"] %><div id="buy<%= p["Id"]%>" onclick="confirmOrder('<%= p["Id"]%>', '<%= p["Name"]%>');">Buy</div><br/>
+	<% end %>
+</div>
+
+<div class="page" id="order">
+
+	<form method="post" action="/brandings/create" id="createcontact"> 
+		<input type="hidden" name="productid" id="productid" value=""></input><br/>
+		<input type="hidden" name="productname" id="productname" value=""></input><br/>
+		First Name<input type="input" name="contactfirstname" id="contactfirstname" value=""></input><br/>
+		Last Name<input type="input" name="contactlastname" id="contactlastname" value=""></input><br/>
+		Email <input type="input" name="contactemail" id="contactemail" value=""></input><br/>
+		Phone <input type="input" name="contactphone" id="contactphone" value=""></input><br/>
+		Mobile <input type="input" name="contactmobile" id="contactmobile" value=""></input><br/>
+		<select name="activitysubject" id="activitysubject">
+			<option>In-Store Pickup</option>
+			<option>Please Deliver</option>
+		</select><br/>
+		Preferred Date<input type="date" name="activitydate" id="activitydate" value=""></input><br/>
+		Street<input type="input" name="contactstreet" id="contactstreet" value=""></input><br/>
+		City<input type="input" name="contactcity" id="contactcity" value=""></input><br/>
+		Postcode<input type="input" name="contactpostalcode" id="contactpostalcode" value=""></input><br/>
+		Country<input type="input" name="contactcountry" id="contactccountry" value=""></input><br/>
+		<input type="submit" value="Submit"></input>
+	</form>
+
+</div>
+
+<div class="page" id="share">
+	Thanks for your business!
+	<div class="button" id="shareButton" onclick="sharePurchase();">Share with your friends!</div>
+	<div class="button"id="surveyButton" onclick="takeSurvey();">Survey</div>
+</div>
+
+<div class="page" id="survey">
+	Survey...
+</div>
+
+<!-- Hidden iFrame that allows access to images in the org -->
+<iframe style="position:absolute;display:none;" src="<%= @iframe_url %>"></iframe>
+
+
+<div id="fb-root"></div>
+<script>
+	function initFacebook(){
+		FB.init({
+			appId  : '501740823195275',
+			status : true, // check login status
+			cookie : true, // enable cookies to allow the server to access the session
+			xfbml  : true  // parse XFBML
+		});
+
+		FB.getLoginStatus(onFacebookInitialLoginStatus);
+	}
+
+	(function(){
+		var e = document.createElement('script');
+		e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+		e.async = true;
+		document.getElementById('fb-root').appendChild(e);
+	}());
+
+	function onFacebookInitialLoginStatus(response){
+		if(response.status=="connected" && response.authResponse){
+			$('#overlay').show();
+			setupAfterLogin();
+		}
+		else{
+			FB.login(onFacebookLoginStatus, {scope:'email'});
+		}
+	}
+
+	function onFacebookLoginStatus(response){
+		if(response.status=="connected" && response.authResponse){
+			$('#overlay').show();
+			setupAfterLogin();
+		}
+	}
+
+	function setupAfterLogin(){
+		FB.api('/me', function(response){
+			$('#contactfirstname').val(response.first_name);
+			$('#contactlastname').val(response.last_name);
+			$('#contactemail').val(response.email);
+			$('#contactcity').val(response.location.name);
+			FB.api('/' + response.id + '?fields=picture', function(response){
+				$('#contactpicture').attr('src', response.picture.data.url);
+				$('#overlay').hide();
+				$('#login').hide();
+				$('#store').show();
+			});
+		});
+	}
+
+	function sharePurchase(){
+		FB.ui(
+		{
+			method: 'feed',
+			name: 'I just used the social store',
+			caption: 'Some caption...',
+			description: (
+			'Social store makes it easy to purchase stuff blah blah '
+			),
+			link: 'https://linktothesocialstore.com',
+			picture: 'http://www.fbrell.com/public/f8.jpg'
+			},
+			function(response) {
+			}
+		);
+	}
+
+	function takeSurvey(){
+		$('#share').hide();
+		$('#survey').show();
+	}
+
+	function confirmOrder(productId, productName){
+		$('#productid').val(productId);
+		$('#productname').val(productName);
+		console.log(productId);
+		$('#store').hide();
+		$('#order').show();
+	}
+
+	$(document).ready(function(){
+		$('#createcontact').submit(function(){  
+			$('#overlay').show();
+			var valuesToSubmit = $(this).serialize();
+			$.ajax({
+				url: $(this).attr('action'),
+				data: valuesToSubmit,
+				dataType: "JSON",
+				type: 'POST'
+			}).success(function(json){
+				$('#order').hide();
+				$('#share').show();
+				$('#overlay').hide();
+			});
+			return false;
+		});
+
+		$('#loginButton').click(function(){
+			initFacebook();
+		});
+	});
+</script>
