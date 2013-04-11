@@ -11,11 +11,12 @@ module OmniAuth
       #
       # @option options [Boolean, true] :sign_in When true, use a sign-in flow instead of the authorization flow.
       # @option options [Boolean, false] :mobile When true, use the mobile sign-in interface.
-      def initialize(app, client_id = nil, client_secret = nil, options = {:display => "popup"}, &block)
+      def initialize(app, client_id = nil, client_secret = nil, options = {:popup => "true"}, &block)
         client_options = {
           :site => "https://login.salesforce.com",
           :authorize_path      => "/services/oauth2/authorize",
-          :access_token_path   => "/services/oauth2/token"
+          :access_token_path   => "/services/oauth2/token",
+          :popup => "true"
         }
         super(app, :forcedotcom, client_id, client_secret, client_options, &block) 
       end
