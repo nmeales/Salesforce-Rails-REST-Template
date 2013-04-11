@@ -3,6 +3,8 @@ OmniauthDemo::Application.routes.draw do
   match "brandings/index", :to => "brandings#find"
   match "brandings/create", :to => "brandings#create"
   match "brandings/callback", :to => "brandings#callback"
+  match "brandings/login", :to => "brandings#login"
+  match "brandings/login/", :to => "brandings#login"
 
   get "sessions/create"
   

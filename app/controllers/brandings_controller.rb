@@ -5,8 +5,11 @@ class BrandingsController < ApplicationController
 
   def index
   end
-  
+
   def callback
+  end
+
+  def login
   end
 
   def find
