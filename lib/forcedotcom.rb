@@ -15,7 +15,8 @@ module OmniAuth
         client_options = {
           :site => "https://login.salesforce.com",
           :authorize_path      => "/services/oauth2/authorize",
-          :access_token_path   => "/services/oauth2/token"
+          :access_token_path   => "/services/oauth2/token",
+          :display => "popup"
         }
         super(app, :forcedotcom, client_id, client_secret, client_options, &block) 
       end
