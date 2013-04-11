@@ -23,6 +23,7 @@ module OmniAuth
       def request_phase
         options[:response_type] ||= 'code'
         options[:display] ||= 'popup'
+        options[:prompt] ||= 'consent'
         super
       end
 
