@@ -21,7 +21,7 @@ class BrandingsController < ApplicationController
     @branding = Brandings.find
     @products = Brandings.find_products
     @company = Brandings.my_info
-    @iframe_url = "#{ENV['sfdc_instance_url']}/secur/frontdoor.jsp?sid=#{ENV['sfdc_token']}"
+    @iframe_url = "#{request.env['omniauth.auth']['credentials']['token']}/secur/frontdoor.jsp?sid=#{ENV['sfdc_token']}"
   end
 
   def create

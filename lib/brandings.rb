@@ -7,11 +7,11 @@ class Brandings
   format :json
 
   def self.set_headers
-    headers 'Authorization' => "OAuth #{ENV['sfdc_token']}"
+    headers 'Authorization' => "OAuth #{request.env['omniauth.auth']['credentials']['token']}"
   end
 
   def self.root_url
-    @root_url = ENV['sfdc_instance_url']+"/services/data/v"+ENV['sfdc_api_version']
+    @root_url = request.env['omniauth.auth']['instance_url']+"/services/data/v"+ENV['sfdc_api_version']
   end
 
   def self.check_login
