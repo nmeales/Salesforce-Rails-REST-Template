@@ -1,8 +1,17 @@
 body {
 	font-family: Arial;
 	font-size: 12px;
-	background-color: #ffffff;
-	padding: 15px;
+	padding:0px;
+	margin:0px;
+}
+#content{
+	width:800px;
+	margin:auto;
+	margin-top:110px;
+}
+
+#loginButton{
+	margin:auto;
 }
 
 .title {

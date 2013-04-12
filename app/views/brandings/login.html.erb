@@ -1,1 +1,38 @@
-<a href="/auth/forcedotcom" target="_blank"/>authorize access to your salesforce.com org</a>
+
+<% unless @response.empty? %>
+	<script>
+		window.location.href = "/brandings/index"
+	</script>
+<% end %>
+
+<style>
+	h1{
+		color:#3B5998;
+		font-size:45px;
+		text-align: center
+	}
+	img{
+	}
+	a{
+		margin-top:20px;
+		display:block;
+		width:200px;
+		height:40px;
+		line-height:40px;
+		font-size:18px;
+		font-weight:bold;
+		text-align:center;
+		background:#3B5998;
+		color:#FFF;
+		text-decoration: none;
+	}
+	a:hover{
+		background:#9EBBF6;
+	}
+</style>
+
+<center>
+	<h1>SOCIAL STORE</h1>
+	<img src="/images/SSLogo.png"></img>
+	<a href="/auth/forcedotcom" target="_blank"/>AUTHENTICATE</a>
+</center>

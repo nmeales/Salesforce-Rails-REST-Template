@@ -13,6 +13,16 @@ class Brandings
   def self.root_url
     @root_url = ENV['sfdc_instance_url']+"/services/data/v"+ENV['sfdc_api_version']
   end
+
+  def self.check_login
+    Brandings.set_headers
+    response = get(Brandings.root_url+"/chatter/users/me/")
+  end
+
+  def self.my_info
+    Brandings.set_headers
+    response = get(Brandings.root_url+"/chatter/users/me/")
+  end
   
   def self.find
     Brandings.set_headers
@@ -24,7 +34,7 @@ class Brandings
 
   def self.find_products
     Brandings.set_headers
-    soql = "SELECT Id, Name, Description FROM Product2"
+    soql = "SELECT Id, Name, Description, purl__c FROM Product2"
     get(Brandings.root_url+"/query/?q=#{CGI::escape(soql)}")
   end
 
