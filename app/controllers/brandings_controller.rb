@@ -25,7 +25,7 @@ class BrandingsController < ApplicationController
   end
 
   def create
-  	@response = Brandings.create(params)
+  	@response = Brandings.create(params, session[:accesstoken], session[:accessurl])
   	respond_to do |format|
         format.json { render :json => @response.to_json }
   	end
