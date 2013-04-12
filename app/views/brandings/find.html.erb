@@ -3,11 +3,11 @@
 	body{
 		color:<%= raw @branding["records"][0]["Font_Colour_Main__c"] %>;
 		<% if @branding["records"][0]["Image_Background__c"] == true %>
-	        background: url('<%= request.env['omniauth.auth']['instance_url'] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>') <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %>;   
-	        background: url('<%= request.env['omniauth.auth']['instance_url'] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %> 0%, <%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%); 
-	        background: url('<%= request.env['omniauth.auth']['instance_url'] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Background_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %>));
-	        background: url('<%= request.env['omniauth.auth']['instance_url'] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%);
-	        background: url('<%= request.env['omniauth.auth']['instance_url'] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Background_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%);
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>') <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %>;   
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %> 0%, <%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%); 
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Background_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %>));
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%);
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Background_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%);
 		<% else %>
 		        background: <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %>;   
 		        background:-moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %> 0%, <%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%); 
@@ -36,7 +36,7 @@
 	#headerlogo{
 		width:100%;
 		height:90px;
-		background-image: url('<%= request.env['omniauth.auth']['instance_url'] %><%= raw @branding["records"][0]["Image_Logo__c"] %>');
+		background-image: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Logo__c"] %>');
 		background-repeat: no-repeat;
 		background-position:left; 
 		margin-top:10px;
@@ -393,7 +393,7 @@
 		<h1 id="welcomeMessage">Welcome!</h1>
 		<% @products["records"].each do |p| %>
 			<div class="productRow" id="pr<%= p["Id"]%>">
-				<div class="productImage" style="background: url('<%= request.env['omniauth.auth']['instance_url'] %><%= p["purl__c"]%>') no-repeat; background-size:100%;background-position:50% 50%;"><div class="likes"><%= rand(5000) %></div></div>
+				<div class="productImage" style="background: url('<%= session[:accessurl] %><%= p["purl__c"]%>') no-repeat; background-size:100%;background-position:50% 50%;"><div class="likes"><%= rand(5000) %></div></div>
 				<div class="productDetails">
 					<div class="title">
 						Name

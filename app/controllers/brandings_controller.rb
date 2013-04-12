@@ -18,10 +18,10 @@ class BrandingsController < ApplicationController
   end
 
   def find
-    @branding = Brandings.find
-    @products = Brandings.find_products
-    @company = Brandings.my_info
-    @iframe_url = "#{request.env['omniauth.auth']['credentials']['token']}/secur/frontdoor.jsp?sid=#{ENV['sfdc_token']}"
+    @branding = Brandings.find(session[:accesstoken], session[:accessurl])
+    @products = Brandings.find_products(session[:accesstoken], session[:accessurl])
+    @company = Brandings.my_info(session[:accesstoken], session[:accessurl])
+    @iframe_url = "#{session[:accessurl]}/secur/frontdoor.jsp?sid=#{session[:accesstoken]}"
   end
 
   def create
