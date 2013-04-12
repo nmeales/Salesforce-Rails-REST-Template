@@ -426,6 +426,8 @@
 				<div id="profilePicture"><div id="profilePictureImage"></div></div>
 				<input type="hidden" name="productid" id="productid" value=""></input>
 				<input type="hidden" name="productname" id="productname" value=""></input>
+				<input type="hidden" name="token" id="token" value="<%= session[:accesstoken] %>"></input>
+				<input type="hidden" name="url" id="url" value="<%= session[:accessurl] %>"></input>
 				<div class="label">First Name</div><div class="data"><input type="input" name="contactfirstname" id="contactfirstname" value=""></input></div>
 				<div class="label">Last Name</div><div class="data"><input type="input" name="contactlastname" id="contactlastname" value=""></input></div>
 				<div class="label">Email</div><div class="data"><input type="input" name="contactemail" id="contactemail" value=""></input></div>

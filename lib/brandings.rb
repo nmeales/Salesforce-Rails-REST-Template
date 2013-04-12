@@ -40,11 +40,10 @@ class Brandings
     get(Brandings.root_url(url)+"/query/?q=#{CGI::escape(soql)}")
   end
 
-  def self.create(params, token, url)
-    Brandings.set_headers(token)
+  def self.create(params)
+    Brandings.set_headers(params[:token])
     headers 'Content-Type' => "application/json"
-
-    response = get(Brandings.root_url(url)+"/chatter/users/me/")
+    response = get(Brandings.root_url(params[:url])+"/chatter/users/me/")
     userid = response["id"]
 
     options = {
@@ -52,7 +51,7 @@ class Brandings
           :name => params[:contactfirstname] + ' ' + params[:contactlastname]
       }.to_json
     }
-    response = post(Brandings.root_url(url)+"/sobjects/Account", options)
+    response = post(Brandings.root_url(params[:url])+"/sobjects/Account", options)
     accountid = response["id"]
     
     options = {
@@ -69,7 +68,7 @@ class Brandings
           :accountid => accountid
       }.to_json
     }
-    response = post(Brandings.root_url(url)+"/sobjects/Contact", options)
+    response = post(Brandings.root_url(params[:url])+"/sobjects/Contact", options)
     contactid = response["id"]
 
     options = {
@@ -81,7 +80,7 @@ class Brandings
           :quantity => "1"
       }.to_json
     }
-    response = post(Brandings.root_url(url)+"/sobjects/Asset", options)
+    response = post(Brandings.root_url(params[:url])+"/sobjects/Asset", options)
     assetid = response["id"]
 
     options = {
@@ -96,7 +95,7 @@ class Brandings
           :activitydate => params[:activitydate]
       }.to_json
     }
-    response = post(Brandings.root_url(url)+"/sobjects/Task", options)
+    response = post(Brandings.root_url(params[:url])+"/sobjects/Task", options)
   end
 
 end
