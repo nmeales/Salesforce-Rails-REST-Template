@@ -1,7 +1,7 @@
 require 'forcedotcom'
 
-OmniAuth.config.full_host = 'https://localhost:3000'
-# OmniAuth.config.full_host = 'https://peaceful-badlands-9510.herokuapp.com'
+# OmniAuth.config.full_host = 'https://localhost:3000'
+OmniAuth.config.full_host = 'https://peaceful-badlands-9510.herokuapp.com'
 
 module OmniAuth
   module Strategies
