@@ -1,11 +1,7 @@
 require 'forcedotcom'
 
-# Set the default hostname for omniauth to send callbacks to.
-# seems to be a bug in omniauth that it drops the httpS
-# this still exists in 0.2.0
-# OmniAuth.config.full_host = 'https://localhost:3000'
-OmniAuth.config.full_host = 'https://peaceful-badlands-9510.herokuapp.com'
-# OmniAuth.config.full_host = 'https://telesales-rails.heroku.com'
+OmniAuth.config.full_host = 'https://localhost:3000'
+# OmniAuth.config.full_host = 'https://peaceful-badlands-9510.herokuapp.com'
 
 module OmniAuth
   module Strategies
@@ -16,8 +12,5 @@ end
 
 # created a new remote access for heroku
 Rails.application.config.middleware.use OmniAuth::Builder do
-  # Telesales App - Heroku
-  # provider :forcedotcom, '3MVG9VmVOCGHKYBSMFoH607T0CtHEK8.Hytco3Z.oY45u4n8Pkk81aJMqBvPih1aPnnUMU82mXpHL_mYriYAh', '4084422413897598678'
-  # Telesales Rails - Local
-  provider :forcedotcom, '3MVG99OxTyEMCQ3gg.yAvqxBcMkd0sFdvFAz0Myj26lOOlwKgfUJgFFKFMhTaiRuUCh1oyBHX4uN2J1A3zzgD', '4040353603002892646'
+  provider :forcedotcom, '3MVG9A2kN3Bn17huDuQprQMHa7If.Mib45nJI.gmakVUFyyVBgJJrF4waqlHdI3qcoG56MMIsrQIIhld6vu_4', '5449733754049641923'
 end

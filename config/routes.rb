@@ -1,16 +1,15 @@
 OmniauthDemo::Application.routes.draw do
 
-  root :to => 'brandings#login'
-  match "brandings/index", :to => "brandings#find"
-  match "brandings/create", :to => "brandings#create"
-  match "brandings/callback", :to => "brandings#callback"
-  match "brandings/login", :to => "brandings#login"
-  match "brandings/login/", :to => "brandings#login"
-
+  # roots for the social store
+  root :to => 'store#login'
+  match "store/login", :to => "store#login"
+  match "store/success", :to => "store#index"
+  match "store/create", :to => "store#create"
+  match "store/callback", :to => "store#callback"
 
   get "sessions/create"
   
-  #add our oauth redirect route - qw
+  # oauth redirect route
   match '/auth/:provider/callback', :to => 'sessions#create'
   match '/auth/failure', :to => 'sessions#fail'
 

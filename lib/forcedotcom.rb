@@ -1,9 +1,6 @@
 require 'omniauth/oauth'
 require 'multi_json'
 
-# Omniauth strategy for using oauth2 and force.com 
-# Author: qwall@salesforce.com
-#
 module OmniAuth
   module Strategies
     class Forcedotcom < OAuth2
@@ -20,6 +17,7 @@ module OmniAuth
         super(app, :forcedotcom, client_id, client_secret, client_options, &block) 
       end
 
+      #Pass aditional params into the oauth call during the request phase
       def request_phase
         options[:response_type] ||= 'code'
         super

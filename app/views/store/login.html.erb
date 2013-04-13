@@ -1,0 +1,11 @@
+<!-- redirect page if session exists -->
+<% unless session[:accesstoken].nil? %>
+	<script>
+		window.location.href = "/store/success"
+	</script>
+<% end %>
+
+<center>
+	<img src="/images/SSLogo.png"></img>
+	<a href="/auth/forcedotcom" target="_blank"/>Login</a>
+</center>

@@ -1,0 +1,333 @@
+<!-- style tags use branding template values as css -->
+<style type="text/css">
+	body{
+		color:<%= raw @branding["records"][0]["Font_Colour_Main__c"] %>;
+		<% if @branding["records"][0]["Image_Background__c"] == true %>
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>') <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %>;   
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %> 0%, <%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%); 
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Background_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %>));
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%);
+	        background: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Background_Image__c"] %>'), linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Background_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%);
+		<% else %>
+		        background: <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %>;   
+		        background:-moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c}"] %> 0%, <%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%); 
+		        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Background_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %>));
+		        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Background_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%);
+		        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Background_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Background_G_B__c"] %> 100%);
+        <% end %>
+		background-repeat:<%= raw @branding["records"][0]["Image_Background_Repeat__c"] %>;
+        background-position:<%= raw @branding["records"][0]["Image_Background_Position__c"] %>;
+	}
+	#header{
+        background: <%= raw @branding["records"][0]["Back_Header_Mid_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Header_Mid_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Header_Mid_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Header_Mid_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Header_Mid_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Header_Mid_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Header_Mid_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Header_Mid_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Header_Mid_G_B__c"] %> 100%);
+	}
+	#logo{
+		background-image: url('<%= session[:accessurl] %><%= raw @branding["records"][0]["Image_Logo__c"] %>');
+	}
+	.page{
+        background: <%= raw @branding["records"][0]["Back_Body_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Body_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Body_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Body_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Body_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Body_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Body_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Body_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Body_G_B__c"] %> 100%);
+	}
+	#pageHeader{
+		color:<%= raw @branding["records"][0]["Font_Colour_Secondary_Title__c"] %>;
+        background: <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%);
+		border-radius:<%= raw @branding["records"][0]["Radius_Page_Block__c"] %>;
+        -webkit-border-radius:<%= raw @branding["records"][0]["Radius_Page_Block__c"] %>;
+        -moz-border-radius:<%= raw @branding["records"][0]["Radius_Page_Block__c"] %>;
+	}
+	.likes{
+		color:<%= raw @branding["records"][0]["Font_Colour_Secondary_Title__c"] %>;
+        background: <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%);
+	}
+	.likeButton, .buyButton{
+		background: <%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Side_Button_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Side_Button_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Side_Button_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Side_Button_G_B__c"] %> 100%);
+		border-radius:<%= raw @branding["records"][0]["Radius_Side_Button__c"] %>;
+        -webkit-border-radius:<%= raw @branding["records"][0]["Radius_Side_Button__c"] %>;
+        -moz-border-radius:<%= raw @branding["records"][0]["Radius_Side_Button__c"] %>;
+	}
+	.likeButton:hover, .buyButton:hover, #orderButton input:hover, .button:hover, #loginButton:hover{
+		background: <%= raw @branding["records"][0]["Back_Side_Button_H_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Side_Button_H_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Side_Button_H_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Side_Button_H_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Side_Button_H_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Side_Button_H_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Side_Button_H_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Side_Button_H_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Side_Button_H_G_B__c"] %> 100%);	
+	}
+	.data input:focus{
+		color:<%= raw @branding["records"][0]["Font_Colour_Main__c"] %>;
+		border: 1px solid <%= raw @branding["records"][0]["Back_Page_Block_Header_G_T__c"] %>;
+	}
+	h1{
+		color:<%= raw @branding["records"][0]["Font_Colour_Secondary_Title__c"] %>;
+        background: <%= raw @branding["records"][0]["Back_Page_Block_Header_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Page_Block_Header_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Page_Block_Header_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Page_Block_Header_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Page_Block_Header_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Page_Block_Header_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Page_Block_Header_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Page_Block_Header_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Page_Block_Header_G_B__c"] %> 100%);
+		border-radius:<%= raw @branding["records"][0]["Radius_Page_Block__c"] %>;
+        -webkit-border-radius:<%= raw @branding["records"][0]["Radius_Page_Block__c"] %>;
+        -moz-border-radius:<%= raw @branding["records"][0]["Radius_Page_Block__c"] %>;
+	}
+	#orderButton input, .button, #loginButton{
+        background: <%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Side_Button_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Side_Button_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Side_Button_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Side_Button_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Side_Button_G_B__c"] %> 100%);
+		border-radius:<%= raw @branding["records"][0]["Radius_Side_Button__c"] %>;
+        -webkit-border-radius:<%= raw @branding["records"][0]["Radius_Side_Button__c"] %>;
+        -moz-border-radius:<%= raw @branding["records"][0]["Radius_Side_Button__c"] %>;
+	}
+	h2{
+		color:<%= raw @branding["records"][0]["Font_Colour_Main__c"] %>;
+	}
+	h3{
+		color:<%= raw @branding["records"][0]["Font_Colour_Main__c"] %>;
+	}
+	#mapIcon{
+        background: <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %>;
+        background: -moz-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%, <%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%); 
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,<%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %>), color-stop(100%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %>));
+        background: -webkit-linear-gradient(top,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%);
+        background: linear-gradient(to bottom,  <%= raw @branding["records"][0]["Back_Header_B_G_T__c"] %> 0%,<%= raw @branding["records"][0]["Back_Header_B_G_B__c"] %> 100%);
+        color:<%= raw @branding["records"][0]["Font_Colour_Secondary_Title__c"] %>;
+	}
+</style>
+
+<!-- banner and logo -->
+<div id="header">
+	<div id="logo"></div>
+</div>
+
+<div id="content">
+
+	<!-- social store banner -->
+	<div id="pageHeader">
+		Social Store
+		<img id="contactpicture"></img>
+	</div>
+
+	<!-- loading overlay -->
+	<div class="page" id="overlay">
+		<img src="/images/loading.gif"/>
+	</div>
+
+	<!-- facebook login section -->
+	<div class="page" id="login">
+		<h1>The <%= @user["companyName"] %> Social Store</h1>
+		<h2>Welcome!<h2>
+		<h3>Please login to continue</h3>
+		<div id="loginButton">Enter Shop</div>
+	</div>
+
+	<!-- products section -->
+	<div class="page" id="store">
+		<h1 id="welcomeMessage">Welcome!</h1>
+		<% @products["records"].each do |p| %>
+			<div class="productRow" id="pr<%= p["Id"]%>">
+				<div class="productImage" style="background: url('<%= session[:accessurl] %><%= p["purl__c"]%>') no-repeat; background-size:100%;background-position:50% 50%;"><div class="likes"><%= rand(5000) %></div></div>
+				<div class="productDetails">
+					<div class="title">
+						Name
+					</div>
+					<div class="info">
+						<%= p["Name"] %>
+					</div>
+					<div class="title">
+						Description
+					</div>
+					<div class="info">
+						<%= p["Description"] %>
+					</div>
+				</div>
+				<div class="productButtons">
+					<div class="buyButton" id="buy<%= p["Id"]%>" onclick="confirmOrder('<%= p["Id"]%>', '<%= p["Name"]%>');">Buy</div>
+					<div class="likeButton" id="buy<%= p["Id"]%>" >Like</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+
+	<!-- order details section -->
+	<div class="page" id="order">
+		<h1>1. Check out your product</h1>
+		<div id="productHeader" class="productRow"></div>
+		<h1>2. Enter your details</h1>
+		<form method="post" action="/brandings/create" id="createcontact"> 
+			<div id="orderForm">
+				<div id="profilePicture"><div id="profilePictureImage"></div></div>
+				<input type="hidden" name="productid" id="productid" value=""></input>
+				<input type="hidden" name="productname" id="productname" value=""></input>
+				<div class="label">First Name</div><div class="data"><input type="input" name="contactfirstname" id="contactfirstname" value=""></input></div>
+				<div class="label">Last Name</div><div class="data"><input type="input" name="contactlastname" id="contactlastname" value=""></input></div>
+				<div class="label">Email</div><div class="data"><input type="input" name="contactemail" id="contactemail" value=""></input></div>
+				<div class="label">Phone</div><div class="data"><input type="input" name="contactphone" id="contactphone" value=""></input></div>
+				<div class="label">Mobile</div><div class="data"><input type="input" name="contactmobile" id="contactmobile" value=""></input></div>
+				<div class="label">Delivery</div><div class="data"><select name="activitysubject" id="activitysubject">
+					<option>In-Store Pickup</option>
+					<option>Please Deliver</option>
+				</select></div>
+				<div class="label">Date</div><div class="data"><input type="date" name="activitydate" id="activitydate" value=""></input></div>
+				<div class="label">Street</div><div class="data"><input type="input" name="contactstreet" id="contactstreet" value=""></input></div>
+				<div class="label">City</div><div class="data"><input type="input" name="contactcity" id="contactcity" value=""></input></div>
+				<div class="label">Postcode</div><div class="data"><input type="input" name="contactpostalcode" id="contactpostalcode" value=""></input></div>
+				<div class="label">Country</div><div class="data"><input type="input" name="contactcountry" id="contactccountry" value=""></input></div>
+			</div>
+			<h1>3. View your nearest store</h1>
+			<div id="mapForm">
+				<div id="mapIcon"></div>
+				<img src="" id="storeLocation" width="760px"></img>
+			</div>
+			<div id="orderButton"><input type="submit" value="4. Order"></input></div>
+		</form>
+	</div>
+
+	<!-- sharing section -->
+	<div class="page" id="share">
+		<h1>Order Details</h1>
+		<h2>Thankyou!</h2>
+		<h3>Your order has been received.</h3>
+		<h3>Share your purchase with your friends:</h3>
+		<div id="friendGrid"></div>
+		<div class="button" id="shareButton" onclick="sharePurchase();">Share</div>
+	</div>
+
+</div>
+
+<div id="fb-root"></div>
+<script>
+	function initFacebook(){
+		FB.init({
+			appId  : '501740823195275',
+			status : true, 
+			cookie : true, 
+			xfbml  : true
+		});
+
+		FB.getLoginStatus(onFacebookInitialLoginStatus);
+	}
+
+	(function(){
+		var e = document.createElement('script');
+		e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+		e.async = true;
+		document.getElementById('fb-root').appendChild(e);
+	}());
+
+	function onFacebookInitialLoginStatus(response){
+		if(response.status=="connected" && response.authResponse){
+			setupAfterLogin();
+		}
+		else{
+			FB.login(onFacebookLoginStatus, {scope:'email'});
+		}
+	}
+
+	function onFacebookLoginStatus(response){
+		if(response.status=="connected" && response.authResponse){
+			setupAfterLogin();
+		}
+	}
+
+	function setupAfterLogin(){
+		FB.api('/me', function(response){
+			$('#contactfirstname').val(response.first_name);
+			$('#contactlastname').val(response.last_name);
+			$('#contactemail').val(response.email);
+			$('#contactcity').val(response.location.name);
+			$('#mapIcon').html(response.location.name + ' Store');
+			$('#storeLocation').attr('src', 'https://maps.googleapis.com/maps/api/staticmap?center=' + response.location.name + '&zoom=13&size=760x300&maptype=roadmap&sensor=false&scale=2');
+			$('#welcomeMessage').html('Hi ' + response.first_name + '! Have a look at our great selection of products');
+			FB.api('/' + response.id + '/picture?type=large', function(response){
+				$('#contactpicture').attr('src', response.data.url);
+				$('#contactpicture').show();
+				$('#profilePictureImage').css('background-image', "url('" + response.data.url + "')");
+				$('#overlay').hide();
+				$('#login').hide();
+				$('#store').show();
+				window.scrollTo(0,0);
+				FB.api('/me/friends?fields=picture', function(response){
+					var newhtml = '';
+					for (var i = 0; i < response.data.length && i < 25; i++) {
+
+					    newhtml += '<img src="' + response.data[i].picture.data.url + '"></img>';
+					}
+					$('#friendGrid').html(newhtml);
+				});
+			});
+		});
+	}
+
+	function sharePurchase(){
+		FB.ui(
+		{
+			method: 'feed',
+			name: '<%= @user["companyName"] %> Social Store',
+			caption: 'I just used the <%= @user["companyName"] %> Social Store',
+			description: (
+			'Shopping has never been easier with the Social Store.'
+			),
+			link: 'https://apps.facebook.com/socialstoredemo',
+			picture: 'https://peaceful-badlands-9510.herokuapp.com/images/SSLogo.png'
+			},
+			function(response) {
+			}
+		);
+	}
+
+	function takeSurvey(){
+		$('#share').hide();
+		$('#survey').show();
+	}
+
+	function confirmOrder(productId, productName){
+		$('#productid').val(productId);
+		$('#productname').val(productName);
+		$('#productHeader').html($('#pr' + productId).html());
+		$('#store').hide();
+		$('#order').show();
+		window.scrollTo(0,0);
+	}
+
+	$(document).ready(function(){
+		$('#createcontact').submit(function(){  
+			$('#overlay').show();
+			var valuesToSubmit = $(this).serialize();
+			$.ajax({
+				url: $(this).attr('action'),
+				data: valuesToSubmit,
+				dataType: "JSON",
+				type: 'POST'
+			}).success(function(json){
+				$('#order').hide();
+				$('#share').show();
+				$('#overlay').hide();
+				window.scrollTo(0,0);
+			});
+			return false;
+		});
+
+		$('#loginButton').click(function(){
+			$('#overlay').show();
+			initFacebook();
+		});
+	});
+</script>
