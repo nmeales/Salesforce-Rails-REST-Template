@@ -23,7 +23,7 @@ class StoreController < ApplicationController
   def create
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
-  	@response = Salesforce.create(params, @user["id"])
+  	@response = Salesforce.create_order(params, @user["id"])
   	respond_to do |format|
         format.json { render :json => @response.to_json }
   	end
