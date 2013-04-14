@@ -16,7 +16,7 @@ class StoreController < ApplicationController
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
     if @user.parsed_response[0].has_key?("errorCode")
-      reset_session
+      # reset_session
       redirect_to :controller => 'store', :action => 'login'
     else
       @branding = Salesforce.get_template(@user["id"])
