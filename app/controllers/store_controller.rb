@@ -15,13 +15,13 @@ class StoreController < ApplicationController
   def index
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
-    if @user.has_key?("errorCode")
-      reset_session
-      redirect_to :controller => 'store', :action => 'login'
-    else
-      @branding = Salesforce.get_template(@user["id"])
-      @products = Salesforce.get_products()
+    case @user.code
+      when 500
+        reset_session
+        redirect_to :controller => 'store', :action => 'login'
     end
+    @branding = Salesforce.get_template(@user["id"])
+    @products = Salesforce.get_products()
   end
 
   # create the order in salesforce
