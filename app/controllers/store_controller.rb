@@ -15,7 +15,7 @@ class StoreController < ApplicationController
   def index
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
-    if @user.parsed_response[0].has_key?("errorCode")
+    if @user.parsed_response[0].has_key?("errorCode") unless @user.parsed_response[0].nil?
       # reset_session
       redirect_to :controller => 'store', :action => 'login'
     else
