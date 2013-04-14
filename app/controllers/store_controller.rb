@@ -16,8 +16,8 @@ class StoreController < ApplicationController
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
     unless @user.parsed_response[0].nil?
-      # reset_session
-      redirect_to :controller => 'store', :action => 'login'
+      reset_session
+      redirect_to "/store/login"
     else
       @branding = Salesforce.get_template(@user["id"])
       @products = Salesforce.get_products()
