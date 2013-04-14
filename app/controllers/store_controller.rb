@@ -21,7 +21,7 @@ class StoreController < ApplicationController
 
   # create the order in salesforce
   def create
-    Salesforce.set_http(params[:accesstoken], params[:accessurl])
+    Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
   	@response = Salesforce.create_order(params, @user["id"])
   	respond_to do |format|
