@@ -1,3 +1,4 @@
 class ApplicationController < ActionController::Base
-  # protect_from_forgery
+	# line below must be removed to allow sessions in facebook canvas app
+  	# protect_from_forgery
 end

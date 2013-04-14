@@ -15,6 +15,7 @@ class StoreController < ApplicationController
   def index
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
+    # the access token has expired so clear session and redirect to login page
     unless @user.parsed_response[0].nil?
       reset_session
       redirect_to "/store/login"
