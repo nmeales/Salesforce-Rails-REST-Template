@@ -19,8 +19,8 @@ class StoreController < ApplicationController
       reset_session
       redirect_to :controller => 'store', :action => 'login'
     else
-      @branding = Salesforce.get_template(@user["id"])
-      @products = Salesforce.get_products()
+      # @branding = Salesforce.get_template(@user["id"])
+      # @products = Salesforce.get_products()
     end
   end
 
