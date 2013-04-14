@@ -15,12 +15,12 @@ class StoreController < ApplicationController
   def index
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
-    if @user.nil?
+    if @user["errorCode"] == "INVALID_SESSION_ID?"
       reset_session
       redirect_to :controller => 'store', :action => 'login'
     else
-      # @branding = Salesforce.get_template(@user["id"])
-      # @products = Salesforce.get_products()
+      @branding = Salesforce.get_template(@user["id"])
+      @products = Salesforce.get_products()
     end
   end
 
