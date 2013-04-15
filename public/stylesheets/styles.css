@@ -4,6 +4,7 @@ font-size:12px;
 color:#3B5998;
 margin:0;
 padding:0
+background-attachement:fixed;
 }
 
 h1 {
@@ -78,19 +79,18 @@ margin:10px auto auto 10px;
 width:800px;
 min-height:600px;
 display:none;
-border:1px solid #efefef;
 margin-bottom:40px;
 border-top:0
 }
 
 #pageHeader {
-width:820px;
+width:800px;
 height:41px;
 line-height:41px;
 font-size:20px;
 z-index:100;
 position:relative;
-margin-left:-20px;
+margin-left:-10px;
 padding:0 10px
 }
 
@@ -142,7 +142,7 @@ margin-top:20px;
 }
 
 .productRow {
-border-bottom:1px solid #efefef;
+border-bottom: 1px solid rgba(255,255,255, 0.4);
 width:760px;
 height:200px;
 padding:20px
@@ -154,7 +154,7 @@ position:relative
 }
 
 .productImage,#profilePicture {
-border:1px solid #efefef;
+border-bottom: 1px solid rgba(255,255,255, 0.4);
 width:200px;
 height:200px
 }
@@ -267,7 +267,6 @@ outline:none
 }
 
 #orderForm,#mapForm {
-border-bottom:1px solid #efefef;
 display:table;
 padding:20px
 }
@@ -335,4 +334,7 @@ position:relative
 
 #appLogo {
 	margin-top:20px;
+}
+#productHeader {
+	border:0px;
 }
