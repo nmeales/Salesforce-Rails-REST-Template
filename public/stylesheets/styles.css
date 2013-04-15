@@ -3,8 +3,8 @@ font-family:Arial;
 font-size:12px;
 color:#3B5998;
 margin:0;
-padding:0
-background-attachement:fixed;
+padding:0;
+background-attachment:fixed;
 }
 
 h1 {
@@ -96,7 +96,6 @@ padding:0 10px
 
 #contactpicture {
 height:30px;
-width:30px;
 position:absolute;
 right:5px;
 top:5px;
