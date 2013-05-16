@@ -1,6 +1,6 @@
 # code below used for SSL on local machine
 
- 
+
 
 APP_PATH = File.expand_path('../../config/application',  __FILE__)
 require File.expand_path('../../config/boot',  __FILE__)
