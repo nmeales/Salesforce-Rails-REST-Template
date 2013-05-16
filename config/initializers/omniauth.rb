@@ -12,5 +12,5 @@ end
 
 # created a new remote access for heroku
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :forcedotcom, '3MVG9y6x0357HlecAjK2a9pDXrRCF5UO99bl6VUKaN57uOHsa.9TDDIESR0PDB2M9hA4Hzt0_8h_JXavJ4W8Y', '5295537183718893468
+  provider :forcedotcom, '3MVG9y6x0357HlecAjK2a9pDXrRCF5UO99bl6VUKaN57uOHsa.9TDDIESR0PDB2M9hA4Hzt0_8h_JXavJ4W8Y', '5295537183718893468'
 end
