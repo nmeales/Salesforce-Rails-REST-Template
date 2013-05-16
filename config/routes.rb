@@ -4,7 +4,7 @@ OmniauthDemo::Application.routes.draw do
   root :to => 'store#login'
   match "store/login", :to => "store#login"
   match "store/success", :to => "store#index"
-  match "store/create", :to => "store#create"
+  match "reports/run", :to => "store#run"
   match "store/callback", :to => "store#callback"
 
   get "sessions/create"

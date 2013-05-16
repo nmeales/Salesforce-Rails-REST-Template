@@ -11,7 +11,7 @@ class StoreController < ApplicationController
   def callback
   end
 
-  # display the storefront with a branded list of products
+  # display the page with a branded list of reports
   def index
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
     @user = Salesforce.get_user()
@@ -20,18 +20,18 @@ class StoreController < ApplicationController
       reset_session
       redirect_to "/store/login"
     else
-      @branding = Salesforce.get_template(@user["id"])
-      @products = Salesforce.get_products()
+      # @branding = Salesforce.get_template(@user["id"])
+      @reports = Salesforce.get_reports()
     end
   end
 
-  # create the order in salesforce
-  def create
+  # run a specific report
+  def run
     Salesforce.set_http(session[:accesstoken], session[:accessurl])
-    @user = Salesforce.get_user()
-  	@response = Salesforce.create_order(params, @user["id"])
+  	@response = Salesforce.run_report(params)
+    @describe = Salesforce.describe_report(params)
   	respond_to do |format|
-        format.json { render :json => @response.to_json }
+        format.json { render :json => {:data => @response, :meta => @describe}.to_json}
   	end
   end
 end

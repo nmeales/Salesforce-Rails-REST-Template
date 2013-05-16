@@ -24,65 +24,20 @@ class Salesforce
     get(@root_url+ "/query/?q=#{CGI::escape(soql)}")
   end
 
-  # get list of current salesforce products
-  def self.get_products()
-    soql = "SELECT Id, Name, Description, purl__c FROM Product2"
+  # get list of salesforce reports
+  def self.get_reports()
+    soql = "SELECT Id, Name FROM Report"
     get(@root_url+"/query/?q=#{CGI::escape(soql)}")
   end
 
-  # create a contact, account, asset and task
-  def self.create_order(params, userid)
-    headers 'Content-Type' => "application/json"
-
-    options = {
-      :body => {
-          :name => params[:contactfirstname] + ' ' + params[:contactlastname]
-      }.to_json
-    }
-    response = post(@root_url+"/sobjects/Account", options)
-    accountid = response["id"]
-    
-    options = {
-      :body => {
-          :firstname => params[:contactfirstname],
-          :lastname => params[:contactlastname],
-          :email => params[:contactemail],
-          :mailingcity => params[:contactcity],
-          :mailingstreet => params[:contactstreet],
-          :mailingpostalcode => params[:contactpostalcode],
-          :mailingcountry => params[:contactcountry],
-          :phone => params[:contactphone],
-          :mobilephone => params[:contactmobile],
-          :accountid => accountid
-      }.to_json
-    }
-    response = post(@root_url+"/sobjects/Contact", options)
-    contactid = response["id"]
-
-    options = {
-      :body => {
-          :name => params[:productname],
-          :contactid => contactid,
-          :status => "Purchased",
-          :Product2Id => params[:productid],
-          :quantity => "1"
-      }.to_json
-    }
-    response = post(@root_url+"/sobjects/Asset", options)
-    assetid = response["id"]
-
-    options = {
-      :body => {
-          :whatid => assetid,
-          :whoid => contactid,
-          :subject => params[:activitysubject],
-          :status => "Not Started",
-          :type => "Meeting",
-          :priority => "Normal",
-          :ownerid => userid,
-          :activitydate => params[:activitydate]
-      }.to_json
-    }
-    response = post(@root_url+"/sobjects/Task", options)
+  # run a specific report and return its result
+  def self.run_report(params)
+    get(@root_url+"/analytics/reports/" + params[:reportid])
   end
+
+  # get describe data for a specific report
+  def self.describe_report(params)
+    get(@root_url+"/analytics/reports/" + params[:reportid] + "/describe")
+  end
+
 end

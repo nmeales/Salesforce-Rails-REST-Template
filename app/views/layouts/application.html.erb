@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>
-            Social Store
-        </title>
-        <%= stylesheet_link_tag :all %>
-		<%= javascript_include_tag :defaults %>
-  		<%= csrf_meta_tag %>
-  		<script type="text/javascript" src="/javascripts/jquery-1.9.1.min.js"></script>
-   </head>
-   <body>
-        <%= yield %>
-    </body>
+  <head>
+    <title>
+        Mobile Analytics
+    </title>
+    <%= stylesheet_link_tag :all %>
+    <%= javascript_include_tag :defaults %>
+    <%= csrf_meta_tag %>
+    <meta name="apple-mobile-web-app-capable" content="yes"></meta> 
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"></meta>
+    <meta name="viewport" content = "width = device-width, initial-scale = 1, user-scalable = no, minimum-scale = 1, maximum-scale = 1"></meta> 
+    <script type="text/javascript" src="/javascripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ </head>
+  <body>
+    <%= yield %>
+  </body>
 </html>
 
 

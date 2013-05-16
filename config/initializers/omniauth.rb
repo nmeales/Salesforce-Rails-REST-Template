@@ -1,7 +1,7 @@
 require 'forcedotcom'
 
 # OmniAuth.config.full_host = 'https://localhost:3000'
-OmniAuth.config.full_host = 'https://peaceful-badlands-9510.herokuapp.com'
+OmniAuth.config.full_host = 'https://enigmatic-reef-1137.herokuapp.com'
 
 module OmniAuth
   module Strategies
@@ -12,5 +12,5 @@ end
 
 # created a new remote access for heroku
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :forcedotcom, '3MVG9A2kN3Bn17huDuQprQMHa7If.Mib45nJI.gmakVUFyyVBgJJrF4waqlHdI3qcoG56MMIsrQIIhld6vu_4', '5449733754049641923'
+  provider :forcedotcom, '3MVG9y6x0357HlecAjK2a9pDXrRCF5UO99bl6VUKaN57uOHsa.9TDDIESR0PDB2M9hA4Hzt0_8h_JXavJ4W8Y', '5295537183718893468
 end
