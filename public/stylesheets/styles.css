@@ -53,8 +53,8 @@ src: url('/fonts/OpenSans-Regular.ttf');
 		line-height:25px;
 	}
 	pre.prettyprint{
-		padding:0px;
-		border:0px;
+		padding:0px !important;
+		border:0px !important;
 	}
 	@-webkit-keyframes rotatew {
 	  from {
@@ -130,7 +130,7 @@ src: url('/fonts/OpenSans-Regular.ttf');
 	}
 	#left{
 		width:300px;
-		height:648px;
+		height:2000px;
 		padding-top:50px;
 		float:left;
 		border-right:1px solid #eeeeee;
@@ -191,6 +191,7 @@ src: url('/fonts/OpenSans-Regular.ttf');
 		position: relative;
 		top: 8px;
 		right: 15px;
+		cursor:pointer;
 	}
 	#header #icon{
 		float:left;
