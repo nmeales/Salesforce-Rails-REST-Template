@@ -1,11 +1,11 @@
 OmniauthDemo::Application.routes.draw do
 
-  # roots for the social store
-  root :to => 'store#login'
-  match "store/login", :to => "store#login"
-  match "store/success", :to => "store#index"
-  match "reports/run", :to => "store#run"
-  match "store/callback", :to => "store#callback"
+  # routes for the reports
+  root :to => 'reports#login'
+  match "reports/login", :to => "reports#login"
+  match "reports/success", :to => "reports#index"
+  match "reports/run", :to => "reports#run"
+  match "reports/callback", :to => "reports#callback"
 
   get "sessions/create"
   

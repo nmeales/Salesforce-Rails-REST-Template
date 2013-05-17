@@ -1,0 +1,364 @@
+<style type="text/css">
+	#profile #picture{
+		background-image: url('<%= @user["photo"]["smallPhotoUrl"] %>');
+	}
+</style>
+<div id="header">
+	<img id="icon" src="/images/cloud.png" onclick="j$('#right>h1').html('Analytics Explorer');j$('#intro').show();j$('#report').hide();j$('#nodata').hide()">
+	</img>
+	<div class="tab selected" id="reportTab" onclick="j$('#code').hide();j$('#right').show();j$('#codeTab').removeClass('selected');j$('#reportTab').addClass('selected');">
+		Reports
+	</div>
+	<div class="tab" id="codeTab" onclick="j$('#code').show();j$('#right').hide();j$('#codeTab').addClass('selected');j$('#reportTab').removeClass('selected');">
+		Code
+	</div>
+	<img src="/images/loading.png" id="reloadimg"></img>
+</div>
+
+<div id="left">
+	<div id="profile">
+		<div id="picture"></div>
+		<div id="text">
+			<div id="name">
+				<%= @user["name"] %>
+			</div>
+			<div id="title">
+				<%= @user["title"] %>
+			</div>
+		</div>
+	</div>
+	<h2>Pick a Report</h2>
+	<form method="post" action="/reports/run" id="fetchreport"> 
+		<div>
+			<select name="reportid" id="reportid">
+				<% @reports["records"].each do |p| %>
+					<option value="<%= p["Id"] %>"><%= p["Name"] %></option>
+				<% end %>
+			</select>
+		</div>
+	</form>
+
+	<h2>Choose a Chart</h2>
+	<div class="row" id="column" onclick="changeChartType('column');j$('.row').removeClass('selected');j$('#column').addClass('selected');"><img src="/images/column25px.png"></img>Column</div>
+	<div class="row" id="scolumn" onclick="changeChartType('scolumn');j$('.row').removeClass('selected');j$('#scolumn').addClass('selected');"><img src="/images/column_stacked25px.png"></img>Stacked Column</div>
+	<div class="row" id="bar" onclick="changeChartType('bar');j$('.row').removeClass('selected');j$('#bar').addClass('selected');"><img src="/images/barchart25px.png"></img>Bar</div>
+	<div class="row" id="sbar" onclick="changeChartType('sbar');j$('.row').removeClass('selected');j$('#sbar').addClass('selected');"><img src="/images/barchart_stacked25px.png"></img>Stacked Bar</div>
+	<div class="row" id="line" onclick="changeChartType('line');j$('.row').removeClass('selected');j$('#line').addClass('selected');"><img src="/images/line25px.png"></img>Line</div>
+	<div class="row" id="pie" onclick="changeChartType('pie');j$('.row').removeClass('selected');j$('#pie').addClass('selected');"><img src="/images/pie25px.png"></img>Pie</div>
+	<div class="row" id="table" onclick="changeChartType('table');j$('.row').removeClass('selected');j$('#table').addClass('selected');"><img src="/images/table25px.png"></img>Table</div>
+	<div class="row" id="area" onclick="changeChartType('area');j$('.row').removeClass('selected');j$('#area').addClass('selected');"><img src="/images/area25px.png"></img>Area</div>
+</div>
+
+<div id="right">
+	<h1>Analytics Explorer</h1>
+	<div id="chartArea">
+		<p id="intro">Welcome to the analytics explorer, <%= @user["firstName"] %>. This app is hosted on Heroku and uses the new Analytics API that is being released in the Summer '13 update. To get started, pick a report on the left from the dropdown. Choose a chart type to change how the report is rendered. Some reports obviously work better with different chart types than others. If you want to see what's happening behind the scenes, click the code tab at the top to see the requests that are being made to Salesforce, and the responses that are being returned. If you have any questions feel free to <a href="https://na1.salesforce.com/00530000001hDbq">chatter me</a>.
+		<div id="report">
+		</div>
+		<p id="nodata">This report contains no data or something went wrong when fetching the report. Please select another.</p>
+	</div>
+</div>
+
+<div id="code">
+	<h1 style="margin-bottom: 30px;">How It Works</h1>
+	<p>
+	<p>This is how the charts are generated for the '<span id="chartTitlePrint"></span>' report. The first thing you do is send a request to Salesforce to get the chart data. The request is basically asking Salesforce to return all the values in the report with id <span id="reportIdPrint"></span>:</p>
+	<pre class="prettyprint" id="request1Print"></pre>
+	<p>This is the response that Salesforce returns:</p>
+	<pre class="prettyprint" id="reponse1Print"></pre>
+	<p>
+		In the response you get a couple of objects that allows you to populate the chart.
+		<ul>
+			<li>acrossDim contains all the label information for the across dimension groupings and sub-groupings.</li>
+			<li>downDim contains all the label information for the down dimension groupings and sub-groupings.</li>
+			<li>factMap contains all the values for the groupings and sub-groupings.</li>
+		</ul>
+	</p>
+	<p>Once you have the initial data you now make a second request to Salesforce to get the metadata for the same report. Metadata tells you what type of chart it is, the name of the chart and the axis labels:</p>
+	<pre class="prettyprint" id="request2Print"></pre>
+	<p>This is the response that Salesforce returns:</p>
+	<pre class="prettyprint" id="reponse2Print"></pre>
+	<p>The response returned gives you the following objects:
+		<ul>
+			<li>reportMetadata contains labels for the dimensions, aggregates and the report name</li>
+			<li>reportExtendedMetadata contains more detailed information for each label</li>
+		</ul>
+	</p>
+	<p>Using all of the returned data from the 2 responses, you can check what type of report it is, create an array of data and values and then use that array to populate a chart.</p>
+</div>
+
+
+<script type="text/javascript">
+
+	var j$ = jQuery.noConflict();
+
+	google.load("visualization", "1", {packages:["corechart"]});
+	google.load('visualization', '1', {packages: ['table']});
+	var googleChart = null;
+	var options = null;
+	var data = null;
+	var hAxisTitle = " ";
+	var vAxisTitle = " ";
+	var chartTitle = " ";
+	var optionType = 1;
+	var reportid = " ";
+	var reporttitle = " ";
+	var stacking = false;
+
+	function changeChartType(type){
+
+		stacking = false;
+
+		j$('#right>h1').html(chartTitle);
+		j$('#intro').hide();
+		j$('#nodata').hide();
+		j$('#report').show();
+    	j$('#code').hide();
+    	j$('#right').show();
+    	j$('#codeTab').removeClass('selected');
+    	j$('#reportTab').addClass('selected');
+
+		switch(type){
+			case 'bar':	googleChart =  new google.visualization.BarChart(document.getElementById('report')); optionType = 2;break;
+			case 'line': googleChart =  new google.visualization.LineChart(document.getElementById('report')); optionType = 1; break;
+			case 'area': googleChart =  new google.visualization.AreaChart(document.getElementById('report')); optionType = 1; break;
+			case 'column': googleChart =  new google.visualization.ColumnChart(document.getElementById('report')); optionType = 1; break;
+			case 'pie':	googleChart =  new google.visualization.PieChart(document.getElementById('report')); optionType = 1; break;
+			case 'table':	googleChart =  new google.visualization.Table(document.getElementById('report')); optionType = 3; break;
+			case 'sbar':	googleChart =  new google.visualization.BarChart(document.getElementById('report')); optionType = 2; stacking = true; break;
+			case 'scolumn': googleChart =  new google.visualization.ColumnChart(document.getElementById('report')); optionType = 1; stacking = true; break;
+
+		}
+
+		switch(optionType){
+			case 1 : 	options = {
+							isStacked: stacking,
+							hAxis: {title: hAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+							vAxis: {title: vAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+							animation: {duration: 1000, easing: 'out'},
+							legend: {textStyle: {color: '#6e6e6e'}},
+							tooltip: {textStyle: {color: '#6e6e6e'}},
+							chartArea:{top:30},
+							colors: ['#58B334', '#9B63D8', '#D5465D', '#00A0A7', '#486BD6', '#F99700', '#0092B7', '#00AE67', '#177CD2', '#EF7739', '#aa3143', '#FF9C72', '#FBDD40', '#E15550', '#87B510']
+						};
+			break;
+			case 2 : 	options = {
+							isStacked: stacking,
+							vAxis: {title: hAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+							hAxis: {title: vAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+							animation: {duration: 1000, easing: 'out'},
+							legend: {textStyle: {color: '#6e6e6e'}},
+							tooltip: {textStyle: {color: '#6e6e6e'}},
+							chartArea:{top:30},
+							colors: ['#58B334', '#9B63D8', '#D5465D', '#00A0A7', '#486BD6', '#F99700', '#0092B7', '#00AE67', '#177CD2', '#EF7739', '#aa3143', '#FF9C72', '#FBDD40', '#E15550', '#87B510']
+						};
+			case 3 : 	options = {
+							isStacked: stacking,
+							vAxis: {title: hAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+							hAxis: {title: vAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+							animation: {duration: 1000, easing: 'out'},
+							legend: {textStyle: {color: '#6e6e6e'}},
+							tooltip: {textStyle: {color: '#6e6e6e'}},
+							chartArea:{top:30},
+							width: j$('#chartArea').width(),
+							colors: ['#58B334', '#9B63D8', '#D5465D', '#00A0A7', '#486BD6', '#F99700', '#0092B7', '#00AE67', '#177CD2', '#EF7739', '#aa3143', '#FF9C72', '#FBDD40', '#E15550', '#87B510']
+						};						
+			break;
+		}
+		googleChart.draw(data,options);	
+	}
+
+	function drawChart(json, meta) {
+		try{
+			console.log(json);
+			console.log(meta);
+			hAxisTitle = " ";
+			vAxisTitle = " ";
+			chartTitle = meta.reportMetadata.name;
+			j$('#nodata').hide();
+			j$('#report').show();
+
+			if(meta.reportExtendedMetadata.reportDimensionColumnInfo[meta.reportMetadata.downDimensions[0]] != null){
+				hAxisTitle = meta.reportExtendedMetadata.reportDimensionColumnInfo[meta.reportMetadata.downDimensions[0]].displayName;
+			}
+			if(meta.reportExtendedMetadata.reportAggregateColumnInfo[meta.reportMetadata.aggregates[0]]){
+				vAxisTitle = meta.reportExtendedMetadata.reportAggregateColumnInfo[meta.reportMetadata.aggregates[0]].displayName;
+			}
+
+			//Create the chart data
+			chart = [];
+			var header = [hAxisTitle];
+
+			if((json.acrossDim != null && json.acrossDim.groupings != null) || (json.downDim != null && json.downDim.groupings != null)){
+				//Matrix Report
+				if(json.acrossDim != null && json.acrossDim.groupings != null){
+					j$.each(json.acrossDim.groupings, function(i, item) {
+						header.push(item.label);
+					}); 
+					j$.each(json.downDim.groupings, function(i, item) {
+						var row = [item.label];
+			          	for(var j = 0; j < json.acrossDim.groupings.length; j++){
+			          		if(json.factMap[i + '!' + j].aggs.length > 0){
+			          			row.push(json.factMap[i + '!' + j].aggs[0].value);
+		          			}else{
+								row.push(0);
+							}
+			          	}
+			          	chart.push(row);
+					});
+				//Summary Report
+				}else if(json.downDim.groupings[0].subGroupings != null) {
+
+					j$.each(json.downDim.groupings, function(i, item) {
+						j$.each(item.subGroupings, function(subi, subitem) {
+							if(j$.inArray(subitem.label, header) == -1){
+							    header.push(subitem.label);
+							}
+						}); 
+					}); 
+					j$.each(json.downDim.groupings, function(i, item) {
+						var row = [item.label];
+			          	for(var j = 1; j < header.length; j++){
+			          		row.push(0);
+			          	}
+						j$.each(item.subGroupings, function(subi, subitem) {
+				          	for(var k = 1; k < header.length; k++){
+				          		if(subitem.label == header[k] && json.factMap[i + '_' + subi + '!T'].aggs.length > 0){
+			          				row[k] = json.factMap[i + '_' + subi + '!T'].aggs[0].value;
+				          		}
+				          	}
+						});
+			          	chart.push(row);
+					});
+				//Tabular Report
+				}else {
+					header.push(vAxisTitle);
+					j$.each(json.downDim.groupings, function(i, item) {
+						var row = [item.label];
+						if(json.factMap[i + '!T'].aggs.length > 0){
+							row.push(json.factMap[i + '!T'].aggs[0].value);
+						}else{
+							row.push(0);
+						}
+			          	chart.push(row);
+					}); 
+				}
+				chart.unshift(header);
+
+				//Create the chart
+				data = google.visualization.arrayToDataTable(chart);
+
+				switch(optionType){
+					case 1 : 	options = {
+									isStacked: stacking,
+									hAxis: {title: hAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+									vAxis: {title: vAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+									animation: {duration: 1000, easing: 'out'},
+									legend: {textStyle: {color: '#6e6e6e'}},
+									tooltip: {textStyle: {color: '#6e6e6e'}},
+									chartArea:{top:30},
+									colors: ['#58B334', '#9B63D8', '#D5465D', '#00A0A7', '#486BD6', '#F99700', '#0092B7', '#00AE67', '#177CD2', '#EF7739', '#aa3143', '#FF9C72', '#FBDD40', '#E15550', '#87B510']
+								};
+					break;
+					case 2 : 	options = {
+									isStacked: stacking,
+									vAxis: {title: hAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+									hAxis: {title: vAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+									animation: {duration: 1000, easing: 'out'},
+									legend: {textStyle: {color: '#6e6e6e'}},
+									tooltip: {textStyle: {color: '#6e6e6e'}},
+									chartArea:{top:30},
+									colors: ['#58B334', '#9B63D8', '#D5465D', '#00A0A7', '#486BD6', '#F99700', '#0092B7', '#00AE67', '#177CD2', '#EF7739', '#aa3143', '#FF9C72', '#FBDD40', '#E15550', '#87B510']
+								};
+					break;
+					case 3 : 	options = {
+							isStacked: stacking,
+							vAxis: {title: hAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+							hAxis: {title: vAxisTitle, titleTextStyle: {color: '#0059a9', fontSize: '16'}, baselineColor: '#eeeeee', gridlines: {color: '#eeeeee'}, textStyle: {color: '#6e6e6e'}},
+							animation: {duration: 1000, easing: 'out'},
+							legend: {textStyle: {color: '#6e6e6e'}},
+							tooltip: {textStyle: {color: '#6e6e6e'}},
+							chartArea:{top:30},
+							width: j$('#chartArea').width(),
+							colors: ['#58B334', '#9B63D8', '#D5465D', '#00A0A7', '#486BD6', '#F99700', '#0092B7', '#00AE67', '#177CD2', '#EF7739', '#aa3143', '#FF9C72', '#FBDD40', '#E15550', '#87B510']
+						};	
+				}
+
+				if(googleChart == null){
+					googleChart =  new google.visualization.ColumnChart(document.getElementById('report')); 
+				}else{
+					googleChart.draw(data,options);
+					j$('#right>h1').html(chartTitle);
+					j$('#intro').hide();
+				}
+
+				j$('#reportIdPrint').html(reportid);
+				j$('#chartTitlePrint').html(chartTitle);
+				j$('#reponse1Print').html(JSON.stringify(json, null, 3));
+				j$('#request1Print').html('/services/data/v27.0/analytics/reports/' + reportid);
+				j$('#reponse2Print').html(JSON.stringify(meta, null, 3));
+				j$('#request2Print').html('/services/data/v27.0/analytics/reports/' + reportid + '/describe');
+				j$('#reloadimg').removeClass('loading');
+
+			}else{
+				if(googleChart != null){
+					j$('#right>h1').html(chartTitle);
+					j$('#nodata').show();
+					j$('#report').hide();
+					j$('#reloadimg').removeClass('loading');
+					j$('#intro').hide();
+				}else{
+					googleChart =  new google.visualization.ColumnChart(document.getElementById('report')); 
+				}
+			}
+		}catch(e){
+			if(googleChart != null){
+				j$('#right>h1').html(reporttitle);
+				j$('#nodata').show();
+				j$('#report').hide();
+				j$('#reloadimg').removeClass('loading');
+				j$('#intro').hide();
+			}else{
+				googleChart =  new google.visualization.ColumnChart(document.getElementById('report')); 
+			}
+		}
+	}
+
+	j$(document).ready(function(){
+		j$('#reloadimg').click(function(e) {
+			j$('#reloadimg').addClass('loading');
+	    	j$('#code').hide();
+	    	j$('#right').show();
+	    	j$('#codeTab').removeClass('selected');
+	    	j$('#reportTab').addClass('selected');
+        	j$('#fetchreport').submit();
+		});
+
+	    j$('#reportid').change(function(e) {
+	    	j$('#reloadimg').addClass('loading');
+	    	j$('#code').hide();
+	    	j$('#right').show();
+	    	j$('#codeTab').removeClass('selected');
+	    	j$('#reportTab').addClass('selected');
+	    	reportid = e.target.options[e.target.selectedIndex].value;
+	    	reporttitle = e.target.options[e.target.selectedIndex].text;
+        	j$('#fetchreport').submit();
+    	});
+
+		j$('#fetchreport').submit(function(){  
+			var valuesToSubmit = j$(this).serialize();
+			j$.ajax({
+				url: j$(this).attr('action'),
+				data: valuesToSubmit,
+				dataType: "JSON",
+				type: 'POST'
+			}).success(function(json){
+				drawChart(json.data, json.meta);
+			});
+			return false;
+		});
+
+		j$('#fetchreport').submit();
+
+	});
+</script>

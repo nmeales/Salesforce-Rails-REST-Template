@@ -1,0 +1,16 @@
+<!-- redirect page if session exists -->
+<% unless session[:accesstoken].nil? %>
+	<script>
+		window.location.href = "/reports/success"
+	</script>
+<% end %>
+<style>
+	body{
+		width:100%;
+		height:100%;
+		background:#149ECD;
+	}
+</style>
+<center>
+	<img id="appLogo" src="/images/cloud.png" onclick="window.location.href = '/auth/forcedotcom'"></img>
+</center>

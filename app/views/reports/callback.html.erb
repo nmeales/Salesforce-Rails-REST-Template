@@ -1,0 +1,10 @@
+<!-- load a hidden iframe which allows access to internal org image -->
+<script type="text/javascript">	
+	$(document).ready(function() {
+	    $(document.body).append('<iframe id="hiddenframe" style="display:none;"></iframe>');
+	    $('iframe#hiddenframe').attr('src', '<%= "#{session[:accessurl]}/secur/frontdoor.jsp?sid=#{session[:accesstoken]}" %>');
+	    $('iframe#hiddenframe').load(function(){
+	        window.location.href = "/reports/success";
+	    });
+	});	
+</script>

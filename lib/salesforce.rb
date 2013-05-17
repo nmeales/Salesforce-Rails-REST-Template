@@ -26,7 +26,7 @@ class Salesforce
 
   # get list of salesforce reports
   def self.get_reports()
-    soql = "SELECT Id, Name FROM Report"
+    soql = "SELECT Id, Name FROM Report ORDER BY Name"
     get(@root_url+"/query/?q=#{CGI::escape(soql)}")
   end
 

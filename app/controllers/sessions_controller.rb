@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   def create
     session[:accesstoken] = request.env['omniauth.auth']['credentials']['token']
     session[:accessurl] = request.env['omniauth.auth']['instance_url']
-    redirect_to :controller => 'store', :action => 'callback'
+    redirect_to :controller => 'reports', :action => 'callback'
   end
 
   # authentication has failed so display the error message to the user
