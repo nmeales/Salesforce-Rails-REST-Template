@@ -3,9 +3,11 @@
 	var j$ = jQuery.noConflict();
 	window.alert = function() {};
 	j$(document).ready(function() {
-			        window.location.href = "/reports/success";
-
-	
+	    j$(document.body).append('<iframe id="hiddenframe"></iframe>');
+	    j$('iframe#hiddenframe').attr('src', '<%= "#{session[:accessurl]}/secur/frontdoor.jsp?sid=#{session[:accesstoken]}" %>&startUrl=/apex/notapage');
+	    j$('iframe#hiddenframe').load(function(){
+	        window.location.href = "/reports/success";
+	    });
 	});	
 </script>
 <style>
@@ -15,5 +17,6 @@
 		background:#149ECD;
 	}
 	#hiddenframe{
+		display:none;
 	}
 </style>

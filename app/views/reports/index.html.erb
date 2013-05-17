@@ -1,6 +1,6 @@
 <style type="text/css">
 	#profile #picture{
-		background-image: url('<%= @user["photo"]["smallPhotoUrl"] %>');
+		background-image: url('<%= @user["photo"]["smallPhotoUrl"] %>?oauth_token=<%= "#{session[:accesstoken]}" %>');
 	}
 </style>
 <div id="header">
