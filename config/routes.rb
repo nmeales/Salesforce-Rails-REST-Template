@@ -1,11 +1,10 @@
 OmniauthDemo::Application.routes.draw do
 
   # routes for the reports
-  root :to => 'reports#login'
-  match "reports/login", :to => "reports#login"
-  match "reports/success", :to => "reports#index"
-  match "reports/run", :to => "reports#run"
-  match "reports/callback", :to => "reports#callback"
+  root :to => 'salesforce#login'
+  match "/login", :to => "salesforce#login"
+  match "/index", :to => "salesforce#index"
+  match "/post", :to => "salesforce#post"
 
   get "sessions/create"
   

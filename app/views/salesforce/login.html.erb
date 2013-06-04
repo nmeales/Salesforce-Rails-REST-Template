@@ -1,0 +1,9 @@
+<!-- redirect page if session already exists -->
+<% unless session[:accesstoken].nil? %>
+	<script>
+		window.location.href = "/index"
+	</script>
+<% end %>
+<center>
+	<a href="/auth/forcedotcom">Authenticate</h1>
+</center>

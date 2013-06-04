@@ -1,0 +1,31 @@
+
+You are authenticated <%= @user["name"] %> ! <br/>
+
+Create a Chatter post: <br/>
+
+<!-- Form to submit -->
+<form method="post" action="/post" id="createpost">
+	<input name="status" type="input"></input>
+	<input type="submit" value="submit"></input>
+</form>
+
+<!-- Submit the form using ajax -->
+<script type="text/javascript">
+	var j$ = jQuery.noConflict();
+
+	j$(document).ready(function(){
+
+		j$('#createpost').submit(function(){  
+			var valuesToSubmit = j$(this).serialize();
+			j$.ajax({
+				url: j$(this).attr('action'),
+				data: valuesToSubmit,
+				dataType: "JSON",
+				type: 'POST'
+			}).success(function(json){
+				alert('New post created with ID: ' + json["id"]);
+			});
+			return false;
+		});
+	});
+</script>
